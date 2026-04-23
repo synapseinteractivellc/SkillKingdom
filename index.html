@@ -66,11 +66,31 @@
           <h2>Actions</h2>
           <p>This is the main actions page. Core gameplay actions will live here.</p>
 
+          <div id="action-status-panel"></div>
+
           <div class="action-grid">
-            <button class="action-btn" type="button">Gather Wood</button>
-            <button class="action-btn" type="button">Mine Ore</button>
-            <button class="action-btn" type="button">Rest</button>
-            <button class="action-btn" type="button">Explore</button>
+            <button id="rest-btn" class="action-btn rest" type="button">
+              Rest
+              <br />
+              <small>+1 Life / Stamina / Mana per second</small>
+            </button>
+            <button id="gather-wood-btn" class="action-btn" type="button">
+              Gather Wood
+              <br />
+              <small>2s | -1 Stamina | +1 Wood</small>
+            </button>
+
+            <button id="mine-copper-btn" class="action-btn" type="button">
+              Mine Copper Ore
+              <br />
+              <small>4s | -2 Stamina | +2 Copper</small>
+            </button>
+
+            <button id="stop-action-btn" class="action-btn" type="button">
+              Stop Action
+              <br />
+              <small>Cancel current action</small>
+            </button>
           </div>
         </section>
 
@@ -105,12 +125,14 @@
         </section>
 
         <section class="tab-panel" data-panel="character">
-          <h2>Character</h2>
-          <p>View and manage your character identity, titles, and combat statistics.</p>
+          <div class="character-page-header">
+            <h2>Character</h2>
+            <p>View and manage your character identity, titles, and combat statistics.</p>
+          </div>
 
-          <div class="landing-card-list character-card-grid">
-            <div class="landing-card">
-              <h3>Character Identity</h3>
+          <div class="character-top-grid">
+            <div class="character-panel-card">              
+              <h3><i data-lucide="user"></i> Character Identity</h3>
 
               <div class="form-row">
                 <label for="character-name-input">Character Name</label>
@@ -123,13 +145,13 @@
                 />
               </div>
 
-              <button id="set-character-name-btn" class="action-btn" type="button">
+              <button id="set-character-name-btn" class="action-btn action-btn-inline" type="button">
                 Set Name
               </button>
             </div>
 
-            <div class="landing-card">
-              <h3>Titles</h3>
+            <div class="character-panel-card">
+              <h3><i data-lucide="crown"></i> Titles</h3>
 
               <div class="form-row">
                 <label for="title-prefix-select">Prefix Title</label>
@@ -146,62 +168,166 @@
               </div>
             </div>
 
-            <div class="landing-card stats-card">
-              <h3>Stats</h3>
+            <div class="character-panel-card">
+              <h3><i data-lucide="swords"></i> Overview Stats</h3>
 
-              <div class="stats-section">
-                <div class="stats-grid">
-                  <div class="stat-row"><span class="stat-label">To Hit</span><span class="stat-value" id="stat-to-hit">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Evasion</span><span class="stat-value" id="stat-evasion">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Block</span><span class="stat-value" id="stat-block">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Defense</span><span class="stat-value" id="stat-defense">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Attack Power</span><span class="stat-value" id="stat-attack-power">0</span></div>
+              <div class="overview-stat-grid">
+                <div class="overview-stat-card">
+                  <i data-lucide="locate-fixed" class="stat-icon"></i>
+                  <div class="overview-stat-value" id="stat-to-hit">0</div>
+                  <div class="overview-stat-label">To Hit</div>
+                </div>
+
+                <div class="overview-stat-card">
+                  <i data-lucide="circle-arrow-out-up-right" class="stat-icon"></i>
+                  <div class="overview-stat-value" id="stat-evasion">0</div>
+                  <div class="overview-stat-label">Evasion</div>
+                </div>
+
+                <div class="overview-stat-card">
+                  <i data-lucide="shield" class="stat-icon"></i>
+                  <div class="overview-stat-value" id="stat-block">0</div>
+                  <div class="overview-stat-label">Block</div>
+                </div>
+
+                <div class="overview-stat-card">
+                  <i data-lucide="shield-plus" class="stat-icon"></i>
+                  <div class="overview-stat-value" id="stat-defense">0</div>
+                  <div class="overview-stat-label">Defense</div>
+                </div>
+
+                <div class="overview-stat-card">
+                  <i data-lucide="sword" class="stat-icon"></i>
+                  <div class="overview-stat-value" id="stat-attack-power">0</div>
+                  <div class="overview-stat-label">Attack Power</div>
                 </div>
               </div>
+            </div>
+          </div>
 
-              <div class="stats-section">
-                <h4>Damage Resist Physical</h4>
-                <div class="stats-grid">
-                  <div class="stat-row"><span class="stat-label">Blunt</span><span class="stat-value" id="resist-physical-blunt">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Pierce</span><span class="stat-value" id="resist-physical-pierce">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Slash</span><span class="stat-value" id="resist-physical-slash">0</span></div>
+          <div class="character-section-card">
+            <h3>Combat Statistics</h3>
+
+            <div class="combat-stat-block">
+              <h4><i data-lucide="shield"></i> Damage Resistances</h4>
+
+              <div class="combat-stat-columns">
+                <div class="combat-subsection-card">
+                  <h5><i data-lucide="sword"></i> Physical</h5>
+                  <div class="combat-stat-grid combat-stat-grid-3">
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Blunt</span>
+                      <span class="combat-stat-number" id="resist-physical-blunt">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Pierce</span>
+                      <span class="combat-stat-number" id="resist-physical-pierce">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Slash</span>
+                      <span class="combat-stat-number" id="resist-physical-slash">0</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="combat-subsection-card">
+                  <h5><i data-lucide="wand"></i> Elemental</h5>
+                  <div class="combat-stat-grid combat-stat-grid-8">
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="mountain" class="icon-earth"></i> Earth</span>
+                      <span class="combat-stat-number" id="resist-elemental-earth">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="droplet" class="icon-water"></i> Water</span>
+                      <span class="combat-stat-number" id="resist-elemental-water">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="wind" class="icon-wind"></i> Wind</span>
+                      <span class="combat-stat-number" id="resist-elemental-wind">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="flame" class="icon-fire"></i> Fire</span>
+                      <span class="combat-stat-number" id="resist-elemental-fire">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="sun" class="icon-light"></i> Light</span>
+                      <span class="combat-stat-number" id="resist-elemental-light">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="moon" class="icon-dark"></i> Dark</span>
+                      <span class="combat-stat-number" id="resist-elemental-dark">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="heart" class="icon-life"></i> Life</span>
+                      <span class="combat-stat-number" id="resist-elemental-life">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="skull" class="icon-death"></i> Death</span>
+                      <span class="combat-stat-number" id="resist-elemental-death">0</span>
+                    </div>
+                  </div>
                 </div>
               </div>
+            </div>
 
-              <div class="stats-section">
-                <h4>Damage Resist Elemental</h4>
-                <div class="stats-grid">
-                  <div class="stat-row"><span class="stat-label">Earth</span><span class="stat-value" id="resist-elemental-earth">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Water</span><span class="stat-value" id="resist-elemental-water">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Wind</span><span class="stat-value" id="resist-elemental-wind">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Fire</span><span class="stat-value" id="resist-elemental-fire">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Light</span><span class="stat-value" id="resist-elemental-light">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Dark</span><span class="stat-value" id="resist-elemental-dark">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Life</span><span class="stat-value" id="resist-elemental-life">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Death</span><span class="stat-value" id="resist-elemental-death">0</span></div>
+            <div class="combat-stat-block">
+              <h4>Damage Potency</h4>
+
+              <div class="combat-stat-columns">
+                <div class="combat-subsection-card">
+                  <h5><i data-lucide="sword"></i> Physical</h5>
+                  <div class="combat-stat-grid combat-stat-grid-3">
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Blunt</span>
+                      <span class="combat-stat-number" id="potency-physical-blunt">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Pierce</span>
+                      <span class="combat-stat-number" id="potency-physical-pierce">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name">Slash</span>
+                      <span class="combat-stat-number" id="potency-physical-slash">0</span>
+                    </div>
+                  </div>
                 </div>
-              </div>
 
-              <div class="stats-section">
-                <h4>Damage Potency Physical</h4>
-                <div class="stats-grid">
-                  <div class="stat-row"><span class="stat-label">Blunt</span><span class="stat-value" id="potency-physical-blunt">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Pierce</span><span class="stat-value" id="potency-physical-pierce">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Slash</span><span class="stat-value" id="potency-physical-slash">0</span></div>
-                </div>
-              </div>
-
-              <div class="stats-section">
-                <h4>Damage Potency Elemental</h4>
-                <div class="stats-grid">
-                  <div class="stat-row"><span class="stat-label">Earth</span><span class="stat-value" id="potency-elemental-earth">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Water</span><span class="stat-value" id="potency-elemental-water">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Wind</span><span class="stat-value" id="potency-elemental-wind">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Fire</span><span class="stat-value" id="potency-elemental-fire">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Light</span><span class="stat-value" id="potency-elemental-light">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Dark</span><span class="stat-value" id="potency-elemental-dark">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Life</span><span class="stat-value" id="potency-elemental-life">0</span></div>
-                  <div class="stat-row"><span class="stat-label">Death</span><span class="stat-value" id="potency-elemental-death">0</span></div>
+                <div class="combat-subsection-card">
+                  <h5><i data-lucide="wand"></i> Elemental</h5>
+                  <div class="combat-stat-grid combat-stat-grid-8">
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="mountain" class="icon-earth"></i> Earth</span>
+                      <span class="combat-stat-number" id="potency-elemental-earth">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="droplet" class="icon-water"></i> Water</span>
+                      <span class="combat-stat-number" id="potency-elemental-water">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="wind" class="icon-wind"></i> Wind</span>
+                      <span class="combat-stat-number" id="potency-elemental-wind">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="flame" class="icon-fire"></i> Fire</span>
+                      <span class="combat-stat-number" id="potency-elemental-fire">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="sun" class="icon-light"></i> Light</span>
+                      <span class="combat-stat-number" id="potency-elemental-light">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="moon" class="icon-dark"></i> Dark</span>
+                      <span class="combat-stat-number" id="potency-elemental-dark">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="heart" class="icon-life"></i> Life</span>
+                      <span class="combat-stat-number" id="potency-elemental-life">0</span>
+                    </div>
+                    <div class="combat-stat-tile">
+                      <span class="combat-stat-name"><i data-lucide="skull" class="icon-death"></i> Death</span>
+                      <span class="combat-stat-number" id="potency-elemental-death">0</span>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
@@ -295,6 +421,11 @@
     <p>Synapse Interactive LLC</p>
   </footer>
 
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="./js/state.js"></script>
+  <script src="./js/actions.js"></script>
+  <script src="./js/render.js"></script>
+  <script src="./js/save.js"></script>
   <script src="./js/main.js"></script>
 </body>
 </html>
